@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { auth, googleProvider } from "../firebase/firebase";
 import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loadingAction, setLoadingAction] = useState(false);
   const { user, loading } = useAuth();
@@ -26,13 +28,7 @@ export default function LoginPage() {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/", { replace: true });
     } catch (err) {
-      if (err?.code === "auth/user-not-found" || err?.code === "auth/invalid-email") {
-        setError("No account with this email");
-      } else if (err?.code === "auth/wrong-password") {
-        setError("Wrong password");
-      } else {
-        setError("Sign in failed. Try again.");
-      }
+      setError("Sign in failed. Check email and password.");
     } finally {
       setLoadingAction(false);
     }
@@ -46,11 +42,7 @@ export default function LoginPage() {
       await signInWithPopup(auth, googleProvider);
       navigate("/", { replace: true });
     } catch (err) {
-      if (err?.code === "auth/popup-blocked") {
-        setError("Please allow popups.");
-      } else {
-        setError("Google sign in failed. Try again.");
-      }
+      setError("Google sign in failed.");
     } finally {
       setLoadingAction(false);
     }
@@ -58,95 +50,60 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-[linear-gradient(135deg,#0b0f1a_0%,#111827_100%)]">
-      <div className="absolute inset-0 -z-10 opacity-20">
-        <div className="absolute w-96 h-96 rounded-full bg-[#7c3aed] top-20 left-20 blur-[160px]"></div>
-        <div className="absolute w-96 h-96 rounded-full bg-[#06b6d4] bottom-20 right-10 blur-[160px]"></div>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="card max-w-md w-full overflow-hidden backdrop-blur-3xl"
-      >
-        <div className="p-8 space-y-6">
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 text-[24px] font-bold tracking-tight">
-              <span className="bg-gradient-to-r from-[#06b6d4] to-[#7c3aed] bg-clip-text text-transparent">
-                Dream
-              </span>{" "}
-              Earn
-            </div>
-            <p className="text-[#9ca3af] text-sm mt-1">
-              Earn real money through tasks, surveys, game installs, and invites
-            </p>
-          </div>
-
-          {error && (
-            <div className="text-sm text-red-500 text-center p-2 rounded-lg bg-red-500/10">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-xs text-[#9ca3af]">Email</label>
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                placeholder="you@example.com"
-                className="w-full p-3 rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/4"
-                disabled={loadingAction}
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs text-[#9ca3af]">Password</label>
-              <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                placeholder="********"
-                className="w-full p-3 rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/4"
-                disabled={loadingAction}
-                required
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loadingAction}
-              className="w-full btn btn-primary font-semibold"
-            >
-              {loadingAction ? "Signing in..." : "Sign In"}
-            </button>
-          </form>
-
-          <div className="flex items-center gap-2 text-[12px] text-[#9ca3af]">
-            <div className="h-px flex-1 bg-[rgba(255,255,255,0.1)]"></div>
-            or
-            <div className="h-px flex-1 bg-[rgba(255,255,255,0.1)]"></div>
-          </div>
-
-          <button
-            onClick={signInWithGoogle}
-            disabled={loadingAction}
-            className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/4 hover:bg-white/6 transition-all"
-          >
-            <img
-              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-              alt="Google"
-              width="18"
-              height="18"
-            />
-            <span>Continue with Google</span>
-          </button>
-
-          <div className="text-center text-xs text-[#9ca3af] mt-4">
-            By signing in, you agree to the Terms & Conditions
-          </div>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="card max-w-md w-full p-8">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold">
+            <span className="text-[#06b6d4]">Dream</span> Earn
+          </h1>
+          <p className="text-sm text-[#9ca3af] mt-1">Sign in to continue</p>
         </div>
+
+        {error && <div className="mb-4 p-3 rounded-xl bg-red-500/10 text-red-500 text-sm">{error}</div>}
+
+        <form onSubmit={onSubmit} className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-3 rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/4"
+            required
+          />
+
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-3 pr-12 rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/4"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((p) => !p)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af]"
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+
+          <button type="submit" disabled={loadingAction} className="w-full btn btn-primary">
+            {loadingAction ? "Signing in..." : "Sign In"}
+          </button>
+        </form>
+
+        <button
+          onClick={signInWithGoogle}
+          disabled={loadingAction}
+          className="w-full mt-3 p-3 rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/4"
+        >
+          Continue with Google
+        </button>
+
+        <p className="text-center text-sm text-[#9ca3af] mt-4">
+          No account? <Link to="/signup" className="text-[#06b6d4]">Create one</Link>
+        </p>
       </motion.div>
     </div>
   );
