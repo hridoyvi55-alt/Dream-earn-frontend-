@@ -9,7 +9,6 @@ import { useAuth } from "../contexts/AuthContext";
 export default function LoginPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -53,20 +52,10 @@ export default function LoginPage() {
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage:
-            "linear-gradient(to bottom, rgba(5,8,22,0.25), rgba(5,8,22,0.72)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80')"
+            "linear-gradient(to bottom, rgba(5,8,22,0.35), rgba(5,8,22,0.78)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80')"
         }}
       />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,182,212,0.14),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.16),transparent_28%)]" />
-      <motion.div
-        animate={{ y: [0, -16, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-16 left-10 w-28 h-28 rounded-full bg-cyan-400/10 blur-3xl"
-      />
-      <motion.div
-        animate={{ y: [0, 18, 0] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-16 right-10 w-32 h-32 rounded-full bg-violet-500/10 blur-3xl"
-      />
 
       <div className="relative z-10 container min-h-screen flex items-center justify-center py-8">
         <motion.div
@@ -89,8 +78,7 @@ export default function LoginPage() {
                 Dream Earn
               </span>
             </h1>
-
-            <p className="mt-3 text-sm text-[#d1d5db]">
+            <p className="mt-3 text-sm text-[#e5e7eb]">
               Welcome back. Sign in to continue.
             </p>
           </div>
@@ -103,7 +91,7 @@ export default function LoginPage() {
 
           <form onSubmit={onSubmit} className="mt-6 space-y-4">
             <div className="space-y-2">
-              <label className="text-sm text-[#e5e7eb]">Email</label>
+              abel className="text-sm text-[#e5e7eb]">Email</label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-300" size={18} />
                 <input
@@ -118,7 +106,7 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm text-[#e5e7eb]">Password</label>
+              abel className="text-sm text-[#e5e7eb]">Password</label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-violet-300" size={18} />
                 <input
@@ -132,8 +120,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((p) => !p)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#d1d5db] hover:text-white"
-                  aria-label="Toggle password visibility"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#e5e7eb] hover:text-white"
                 >
                   <motion.div animate={{ scale: showPassword ? 1.08 : 1 }} transition={{ duration: 0.2 }}>
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -153,7 +140,7 @@ export default function LoginPage() {
             </motion.button>
           </form>
 
-          <div className="mt-4 text-center text-sm text-[#d1d5db]">
+          <div className="mt-4 text-center text-sm text-[#e5e7eb]">
             Don't have an account?{" "}
             <Link to="/signup" className="text-cyan-300 font-semibold hover:underline">
               Signup
@@ -162,7 +149,7 @@ export default function LoginPage() {
 
           <div className="mt-5 flex items-center gap-3">
             <div className="h-px flex-1 bg-white/10" />
-            <span className="text-xs text-[#d1d5db]">OR</span>
+            <span className="text-xs text-[#e5e7eb]">OR</span>
             <div className="h-px flex-1 bg-white/10" />
           </div>
 
