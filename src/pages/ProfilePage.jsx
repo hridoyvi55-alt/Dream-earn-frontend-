@@ -2,13 +2,14 @@ import { motion } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
 import BottomNav from "../components/BottomNav";
 import { useNavigate } from "react-router-dom";
-import { User, Crown, DollarSign, Star, UserPlus, LogOut } from "lucide-react";
+import { User, Crown, DollarSign, Star, UserPlus, LogOut, CalendarDays, Venus } from "lucide-react";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 
 export default function ProfilePage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const profile = JSON.parse(localStorage.getItem("dream_earn_profile") || "{}");
 
   const logout = async () => {
     await signOut(auth);
@@ -16,85 +17,50 @@ export default function ProfilePage() {
   };
 
   if (loading) {
-    return (
-      <div className="container p-8 text-center text-[#9ca3af]">
-        Loading...
-      </div>
-    );
+    return <div className="container p-8 text-center text-[#9ca3af]">Loading...</div>;
   }
 
   return (
     <div className="min-h-screen pb-20">
       <div className="container py-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="card p-6"
-        >
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="card p-6">
           <div className="flex flex-col items-center gap-6">
             <div className="w-20 h-20 rounded-[24px] overflow-hidden border-2 border-[rgba(255,255,255,0.15)]">
               <img
                 src={
                   user?.photoURL ||
-                  "https://ui-avatars.com/api/?name=" +
-                    (user?.displayName || "U") +
-                    "&background=06b6d4&color=fff"
+                  `https://ui-avatars.com/api/?name=${user?.displayName || profile.fullName || "U"}&background=06b6d4&color=fff`
                 }
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="text-center">
-              <h1 className="text-lg font-semibold">
-                {user?.displayName || "User"}
-              </h1>
-              <p className="text-sm text-[#9ca3af]">
-                {user?.email || "Unknown email"}
-              </p>
+              <h1 className="text-lg font-semibold">{user?.displayName || profile.fullName || "User"}</h1>
+              <p className="text-sm text-[#9ca3af]">{user?.email || profile.email || "Unknown email"}</p>
             </div>
           </div>
 
           <div className="mt-6 space-y-4">
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2 text-sm" style={{ opacity: 0.5 }}>
-                <User size={16} strokeWidth={2} />
-                <span className="text-[#9ca3af]">Profile</span>
-              </div>
-              <div className="text-xs text-[#9ca3af]">
-                Profile settings will be added.
-              </div>
+            <div className="flex items-center justify-between p-3 rounded-xl border border-[rgba(255,255,255,0.08)]">
+              <span className="text-sm text-[#9ca3af] flex items-center gap-2"><User size={16} /> Full Name</span>
+              <span className="text-sm">{user?.displayName || profile.fullName || "-"}</span>
             </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2 text-sm" style={{ opacity: 0.5 }}>
-                <UserPlus size={16} strokeWidth={2} />
-                <span className="text-[#9ca3af]">Invite</span>
-              </div>
-              <div className="text-xs text-[#9ca3af]">
-                See your referral link & stats.
-              </div>
+            <div className="flex items-center justify-between p-3 rounded-xl border border-[rgba(255,255,255,0.08)]">
+              <span className="text-sm text-[#9ca3af] flex items-center gap-2"><Venus size={16} /> Gender</span>
+              <span className="text-sm capitalize">{profile.gender || "-"}</span>
             </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2 text-sm" style={{ opacity: 0.5 }}>
-                <Star size={16} strokeWidth={2} />
-                <span className="text-[#9ca3af]">Leaderboard Rank</span>
-              </div>
-              <div className="text-xs text-[#9ca3af]">
-                Currently top 10% worldwide.
-              </div>
+            <div className="flex items-center justify-between p-3 rounded-xl border border-[rgba(255,255,255,0.08)]">
+              <span className="text-sm text-[#9ca3af] flex items-center gap-2"><CalendarDays size={16} /> Date of Birth</span>
+              <span className="text-sm">{profile.dob || "-"}</span>
             </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2 text-sm" style={{ opacity: 0.5 }}>
-                <DollarSign size={16} strokeWidth={2} />
-                <span className="text-[#9ca3af]">Total Earned</span>
-              </div>
-              <div className="text-xs text-[#9ca3af]">78.20 AED</div>
+            <div className="flex items-center justify-between p-3 rounded-xl border border-[rgba(255,255,255,0.08)]">
+              <span className="text-sm text-[#9ca3af] flex items-center gap-2"><DollarSign size={16} /> Total Earned</span>
+              <span className="text-sm">78.20 AED</span>
             </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2 text-sm" style={{ opacity: 0.5 }}>
-                <Crown size={16} strokeWidth={2} />
-                <span className="text-[#9ca3af]">Level</span>
-              </div>
-              <div className="text-xs text-[#9ca3af]">Level 3</div>
+            <div className="flex items-center justify-between p-3 rounded-xl border border-[rgba(255,255,255,0.08)]">
+              <span className="text-sm text-[#9ca3af] flex items-center gap-2"><Crown size={16} /> Level</span>
+              <span className="text-sm">Level 3</span>
             </div>
           </div>
         </motion.div>
