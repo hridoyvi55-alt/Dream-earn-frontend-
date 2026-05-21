@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
-import { Eye, EyeOff, Mail, Lock, Sparkles, Chrome } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, Chrome, Sparkles, ArrowRight } from "lucide-react";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../firebase/firebase";
 import { useAuth } from "../contexts/AuthContext";
@@ -24,7 +24,6 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     setBusy(true);
-
     try {
       await signInWithEmailAndPassword(auth, email.trim(), password);
       navigate("/", { replace: true });
@@ -49,132 +48,173 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#070b14]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(124,58,237,0.20),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(6,182,212,0.18),transparent_32%),radial-gradient(circle_at_right,rgba(255,255,255,0.08),transparent_25%)]" />
+    <div className="min-h-screen relative overflow-hidden bg-[#050816] text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(0,255,255,0.18),transparent_30%),radial-gradient(circle_at_top_right,rgba(168,85,247,0.18),transparent_28%),radial-gradient(circle_at_bottom,rgba(59,130,246,0.12),transparent_35%)]" />
       <motion.div
-        animate={{ y: [0, -18, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-20 left-8 w-28 h-28 rounded-full bg-cyan-400/10 blur-2xl"
-      />
-      <motion.div
-        animate={{ y: [0, 22, 0] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-20 right-10 w-32 h-32 rounded-full bg-violet-500/10 blur-2xl"
+        animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 opacity-30 bg-[linear-gradient(120deg,rgba(6,182,212,0.06),rgba(168,85,247,0.06),rgba(14,165,233,0.06),rgba(6,182,212,0.06))] bg-[length:300%_300%]"
       />
 
       <div className="container min-h-screen flex items-center justify-center py-8">
-        <motion.div
-          initial={{ opacity: 0, y: 26, scale: 0.97 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="w-full max-w-md rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_20px_80px_rgba(0,0,0,0.45)] p-6 md:p-8"
-        >
-          <div className="text-center">
-            <motion.div
-              animate={{ rotate: [0, 8, -8, 0], scale: [1, 1.04, 1] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-              className="mx-auto mb-4 w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-cyan-400 via-sky-400 to-violet-500 shadow-lg shadow-cyan-500/20"
-            >
-              <Sparkles size={28} color="white" />
-            </motion.div>
-            <h1 className="text-3xl font-extrabold tracking-tight">
-              <span className="bg-gradient-to-r from-cyan-300 to-violet-400 bg-clip-text text-transparent">
-                Dream
-              </span>{" "}
-              Earn
-            </h1>
-            <p className="text-sm text-[#9ca3af] mt-2">Sign in to continue</p>
-          </div>
+        <div className="w-full max-w-5xl grid lg:grid-cols-2 gap-6 items-stretch">
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="hidden lg:flex relative overflow-hidden rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-2xl p-10"
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,182,212,0.14),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.14),transparent_26%)]" />
+            <div className="relative z-10 flex flex-col justify-between w-full">
+              <div>
+                <motion.div
+                  animate={{ rotate: [0, 8, -8, 0], scale: [1, 1.06, 1] }}
+                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-cyan-400 via-sky-400 to-violet-500 shadow-[0_0_35px_rgba(34,211,238,0.35)]"
+                >
+                  <Sparkles size={28} color="white" />
+                </motion.div>
 
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-5 p-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-300 text-sm"
-            >
-              {error}
-            </motion.div>
-          )}
+                <h1 className="mt-8 text-5xl font-black leading-tight tracking-tight">
+                  <span className="bg-gradient-to-r from-cyan-300 via-sky-300 to-violet-400 bg-clip-text text-transparent">
+                    Dream
+                  </span>{" "}
+                  Earn
+                </h1>
+                <p className="mt-4 text-[#cbd5e1] max-w-md text-base leading-7">
+                  A futuristic earning platform with smooth glass UI, neon glow, and premium motion design.
+                </p>
+              </div>
 
-          <form onSubmit={onSubmit} className="mt-6 space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm text-[#cbd5e1]">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9ca3af]" size={18} />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full pl-10 pr-4 py-3.5 rounded-2xl bg-black/20 border border-white/10 outline-none focus:border-cyan-400/60 focus:bg-black/25 transition-all"
-                  required
-                />
+              <div className="mt-10 grid grid-cols-2 gap-4 text-sm">
+                <div className="rounded-3xl bg-black/20 border border-white/10 p-4">
+                  <div className="text-cyan-300 font-semibold">Fast Access</div>
+                  <div className="text-[#9ca3af] mt-1">Simple login flow with secure navigation.</div>
+                </div>
+                <div className="rounded-3xl bg-black/20 border border-white/10 p-4">
+                  <div className="text-violet-300 font-semibold">Smooth Motion</div>
+                  <div className="text-[#9ca3af] mt-1">Animated layout with soft hover feedback.</div>
+                </div>
               </div>
             </div>
+          </motion.div>
 
-            <div className="space-y-2">
-              <label className="text-sm text-[#cbd5e1]">Password</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9ca3af]" size={18} />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                  className="w-full pl-10 pr-12 py-3.5 rounded-2xl bg-black/20 border border-white/10 outline-none focus:border-cyan-400/60 focus:bg-black/25 transition-all"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((p) => !p)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-white transition"
-                  aria-label="Toggle password visibility"
-                >
-                  <motion.div
-                    animate={{ scale: showPassword ? 1.08 : 1 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </motion.div>
-                </button>
+          <motion.div
+            initial={{ opacity: 0, x: 24, scale: 0.98 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative overflow-hidden rounded-[32px] border border-white/10 bg-white/8 backdrop-blur-2xl shadow-[0_20px_80px_rgba(0,0,0,0.45)] p-6 md:p-8"
+          >
+            <div className="lg:hidden text-center mb-6">
+              <motion.div
+                animate={{ rotate: [0, 8, -8, 0], scale: [1, 1.04, 1] }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+                className="mx-auto mb-4 w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br from-cyan-400 via-sky-400 to-violet-500 shadow-[0_0_35px_rgba(34,211,238,0.35)]"
+              >
+                <Sparkles size={28} color="white" />
+              </motion.div>
+              <h1 className="text-3xl font-black">
+                <span className="bg-gradient-to-r from-cyan-300 to-violet-400 bg-clip-text text-transparent">
+                  Dream
+                </span>{" "}
+                Earn
+              </h1>
+              <p className="text-sm text-[#9ca3af] mt-2">Sign in to continue</p>
+            </div>
+
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold">Welcome back</h2>
+              <p className="text-sm text-[#9ca3af] mt-1">Use your email and password to continue.</p>
+            </div>
+
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-5 p-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-300 text-sm"
+              >
+                {error}
+              </motion.div>
+            )}
+
+            <form onSubmit={onSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm text-[#cbd5e1]">Email</label>
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-300" size={18} />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className="w-full pl-11 pr-4 py-4 rounded-3xl bg-black/20 border border-white/10 outline-none focus:border-cyan-400/70 focus:bg-black/25 transition-all"
+                    required
+                  />
+                </div>
               </div>
+
+              <div className="space-y-2">
+                <label className="text-sm text-[#cbd5e1]">Password</label>
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-violet-300" size={18} />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    className="w-full pl-11 pr-14 py-4 rounded-3xl bg-black/20 border border-white/10 outline-none focus:border-cyan-400/70 focus:bg-black/25 transition-all"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((p) => !p)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-white"
+                    aria-label="Toggle password visibility"
+                  >
+                    <motion.div animate={{ scale: showPassword ? 1.08 : 1 }} transition={{ duration: 0.2 }}>
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </motion.div>
+                  </button>
+                </div>
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.01, boxShadow: "0 0 28px rgba(34,211,238,0.25)" }}
+                whileTap={{ scale: 0.99 }}
+                type="submit"
+                disabled={busy}
+                className="w-full py-4 rounded-3xl text-base font-semibold bg-gradient-to-r from-cyan-400 via-sky-400 to-violet-500 text-white shadow-lg shadow-cyan-500/20"
+              >
+                {busy ? "Logging in..." : "Login"}
+              </motion.button>
+            </form>
+
+            <div className="mt-4 text-center text-sm text-[#9ca3af]">
+              Don't have an account?{" "}
+              <Link to="/signup" className="text-cyan-300 font-semibold hover:underline">
+                Signup
+              </Link>
+            </div>
+
+            <div className="mt-5 flex items-center gap-3">
+              <div className="h-px flex-1 bg-white/10" />
+              <span className="text-xs text-[#9ca3af]">OR</span>
+              <div className="h-px flex-1 bg-white/10" />
             </div>
 
             <motion.button
-              whileHover={{ scale: 1.01 }}
+              whileHover={{ y: -1, scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
-              type="submit"
+              onClick={googleLogin}
               disabled={busy}
-              className="btn btn-primary w-full text-base font-semibold py-3.5 rounded-2xl shadow-lg shadow-cyan-500/20"
+              className="mt-5 w-full flex items-center justify-center gap-3 py-4 rounded-3xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all"
             >
-              {busy ? "Logging in..." : "Login"}
+              <Chrome size={18} className="text-[#e5e7eb]" />
+              <span>Continue with Google</span>
+              <ArrowRight size={16} className="text-cyan-300" />
             </motion.button>
-          </form>
-
-          <div className="mt-4 text-center text-sm text-[#9ca3af]">
-            Don't have an account?{" "}
-            <Link to="/signup" className="text-cyan-300 font-semibold hover:underline">
-              Signup
-            </Link>
-          </div>
-
-          <div className="mt-5 flex items-center gap-3">
-            <div className="h-px flex-1 bg-white/10" />
-            <span className="text-xs text-[#9ca3af]">OR</span>
-            <div className="h-px flex-1 bg-white/10" />
-          </div>
-
-          <motion.button
-            whileHover={{ y: -1, scale: 1.01 }}
-            whileTap={{ scale: 0.99 }}
-            onClick={googleLogin}
-            disabled={busy}
-            className="mt-5 w-full flex items-center justify-center gap-3 py-3.5 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all"
-          >
-            <Chrome size={18} className="text-[#e5e7eb]" />
-            <span>Continue with Google</span>
-          </motion.button>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
