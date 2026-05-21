@@ -1,14 +1,17 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import BottomNav from "../components/BottomNav";
 import { useNavigate } from "react-router-dom";
 import { Moon, Sun, Globe, BarChart3, Shield, LogOut, ImageIcon } from "lucide-react";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 
 export default function SettingsPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
-  const [darkMode, setDarkMode] = useState(true); // mock gestion
+  const [darkMode, setDarkMode] = useState(true);
   const [language, setLanguage] = useState("en-US");
   const [showTutorial, setShowTutorial] = useState(true);
   const [receiveNotifications, setReceiveNotifications] = useState(true);
@@ -22,7 +25,7 @@ export default function SettingsPage() {
   }
 
   const logout = async () => {
-    // await Auth.signOut();
+    await signOut(auth);
     navigate("/login", { replace: true });
   };
 
@@ -41,13 +44,7 @@ export default function SettingsPage() {
                 Customize your Dream Earn experience.
               </p>
             </div>
-            <div
-              className="w-12 h-12 rounded-full overflow-hidden border-2 border-[rgba(255,255,255,0.15)]"
-              style={{
-                background:
-                  "radial-gradient(circle at 50% 50%, rgba(6,182,212,0.8), transparent)",
-              }}
-            >
+            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[rgba(255,255,255,0.15)]">
               <img
                 src={
                   user?.photoURL ||
@@ -62,17 +59,10 @@ export default function SettingsPage() {
           </div>
 
           <div className="space-y-6">
-            {/* Appearance */}
             <div className="flex flex-wrap items-center justify-between">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-xl flex items-center justify-center"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #0ea5e9, #38bdf8)",
-                    }}
-                  >
+                  <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-[#0ea5e9] to-[#38bdf8]">
                     <ImageIcon size={18} strokeWidth={2} color="#ffffff" />
                   </div>
                   <div>
@@ -86,29 +76,17 @@ export default function SettingsPage() {
 
               <button
                 onClick={() => setDarkMode((prev) => !prev)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[rgba(255,255,255,0.15)]
-                  bg-white/4 text-sm hover:bg-white/6 transition-all"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[rgba(255,255,255,0.15)] bg-white/4 text-sm hover:bg-white/6 transition-all"
               >
-                {darkMode ? (
-                  <Moon size={16} strokeWidth={2} />
-                ) : (
-                  <Sun size={16} strokeWidth={2} />
-                )}
+                {darkMode ? <Moon size={16} strokeWidth={2} /> : <Sun size={16} strokeWidth={2} />}
                 <span>{darkMode ? "Dark Mode" : "Light Mode"}</span>
               </button>
             </div>
 
-            {/* Language */}
             <div className="flex flex-wrap items-center justify-between">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-xl flex items-center justify-center"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #7c3aed, #a855f7)",
-                    }}
-                  >
+                  <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-[#7c3aed] to-[#a855f7]">
                     <Globe size={18} strokeWidth={2} color="#ffffff" />
                   </div>
                   <div>
@@ -132,17 +110,10 @@ export default function SettingsPage() {
               </select>
             </div>
 
-            {/* Analytics / Tracking */}
             <div className="flex flex-wrap items-center justify-between">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-xl flex items-center justify-center"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #10b981, #34d399)",
-                    }}
-                  >
+                  <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-[#10b981] to-[#34d399]">
                     <BarChart3 size={18} strokeWidth={2} color="#ffffff" />
                   </div>
                   <div>
@@ -161,28 +132,17 @@ export default function SettingsPage() {
                   onChange={(e) => setShowTutorial(e.target.checked)}
                   className="sr-only"
                 />
-                <div
-                  className={`w-9 h-5 rounded-full transition-all ${
-                    showTutorial ? "bg-[#06b6d4]" : "bg-gray-600"
-                  }`}
-                ></div>
+                <div className={`w-9 h-5 rounded-full transition-all ${showTutorial ? "bg-[#06b6d4]" : "bg-gray-600"}`}></div>
                 <span className="ml-2 text-xs text-[#9ca3af]">
                   {showTutorial ? "Enabled" : "Disabled"}
                 </span>
               </label>
             </div>
 
-            {/* Notifications */}
             <div className="flex flex-wrap items-center justify-between">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-xl flex items-center justify-center"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #f59e0b, #fbbf24)",
-                    }}
-                  >
+                  <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-[#f59e0b] to-[#fbbf24]">
                     <Shield size={18} strokeWidth={2} color="#ffffff" />
                   </div>
                   <div>
@@ -201,23 +161,17 @@ export default function SettingsPage() {
                   onChange={(e) => setReceiveNotifications(e.target.checked)}
                   className="sr-only"
                 />
-                <div
-                  className={`w-9 h-5 rounded-full transition-all ${
-                    receiveNotifications ? "bg-[#06b6d4]" : "bg-gray-600"
-                  }`}
-                ></div>
+                <div className={`w-9 h-5 rounded-full transition-all ${receiveNotifications ? "bg-[#06b6d4]" : "bg-gray-600"}`}></div>
                 <span className="ml-2 text-xs text-[#9ca3af]">
                   {receiveNotifications ? "Enabled" : "Disabled"}
                 </span>
               </label>
             </div>
 
-            {/* Log Out */}
             <motion.button
               onClick={logout}
               whileHover={{ scale: 1.02 }}
-              className="w-full btn mt-6 border border-[rgba(255,255,255,0.15)]
-                bg-red-700/20 text-red-500 hover:bg-red-700/30 text-sm"
+              className="w-full btn mt-6 border border-[rgba(255,255,255,0.15)] bg-red-700/20 text-red-500 hover:bg-red-700/30 text-sm"
             >
               <LogOut size={16} strokeWidth={2} />
               <span>Log Out</span>
