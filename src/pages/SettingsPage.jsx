@@ -17,11 +17,7 @@ export default function SettingsPage() {
   const [receiveNotifications, setReceiveNotifications] = useState(true);
 
   if (loading) {
-    return (
-      <div className="container p-8 text-center text-[#9ca3af]">
-        Loading settings...
-      </div>
-    );
+    return <div className="container p-8 text-center text-[#9ca3af]">Loading settings...</div>;
   }
 
   const logout = async () => {
@@ -32,11 +28,7 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen pb-20 bg-[radial-gradient(ellipse_at_top_right,rgba(124,58,237,0.06),transparent_60%),#0b0f1a]">
       <div className="container py-8">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="card p-6"
-        >
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="card p-6">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
             <div>
               <h1 className="text-lg font-semibold">Settings</h1>
@@ -44,14 +36,10 @@ export default function SettingsPage() {
                 Customize your Dream Earn experience.
               </p>
             </div>
+
             <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[rgba(255,255,255,0.15)]">
               <img
-                src={
-                  user?.photoURL ||
-                  "https://ui-avatars.com/api/?name=" +
-                    (user?.displayName || "U") +
-                    "&background=06b6d4&color=fff"
-                }
+                src={user?.photoURL || `https://ui-avatars.com/api/?name=${user?.displayName || "U"}&background=06b6d4&color=fff`}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
@@ -135,52 +123,4 @@ export default function SettingsPage() {
                 <div className={`w-9 h-5 rounded-full transition-all ${showTutorial ? "bg-[#06b6d4]" : "bg-gray-600"}`}></div>
                 <span className="ml-2 text-xs text-[#9ca3af]">
                   {showTutorial ? "Enabled" : "Disabled"}
-                </span>
-              </label>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-between">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br from-[#f59e0b] to-[#fbbf24]">
-                    <Shield size={18} strokeWidth={2} color="#ffffff" />
-                  </div>
-                  <div>
-                    <div className="font-medium text-sm">Notifications</div>
-                    <div className="text-xs text-[#9ca3af]">
-                      Withdrawal, task, & reward alerts
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={receiveNotifications}
-                  onChange={(e) => setReceiveNotifications(e.target.checked)}
-                  className="sr-only"
-                />
-                <div className={`w-9 h-5 rounded-full transition-all ${receiveNotifications ? "bg-[#06b6d4]" : "bg-gray-600"}`}></div>
-                <span className="ml-2 text-xs text-[#9ca3af]">
-                  {receiveNotifications ? "Enabled" : "Disabled"}
-                </span>
-              </label>
-            </div>
-
-            <motion.button
-              onClick={logout}
-              whileHover={{ scale: 1.02 }}
-              className="w-full btn mt-6 border border-[rgba(255,255,255,0.15)] bg-red-700/20 text-red-500 hover:bg-red-700/30 text-sm"
-            >
-              <LogOut size={16} strokeWidth={2} />
-              <span>Log Out</span>
-            </motion.button>
-          </div>
-        </motion.div>
-      </div>
-
-      <BottomNav />
-    </div>
-  );
-}
+                </
