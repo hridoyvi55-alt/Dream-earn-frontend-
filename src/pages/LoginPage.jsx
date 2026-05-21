@@ -9,6 +9,7 @@ import { useAuth } from "../contexts/AuthContext";
 export default function LoginPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -78,6 +79,7 @@ export default function LoginPage() {
                 Dream Earn
               </span>
             </h1>
+
             <p className="mt-3 text-sm text-[#e5e7eb]">
               Welcome back. Sign in to continue.
             </p>
@@ -91,7 +93,7 @@ export default function LoginPage() {
 
           <form onSubmit={onSubmit} className="mt-6 space-y-4">
             <div className="space-y-2">
-              abel className="text-sm text-[#e5e7eb]">Email</label>
+              <label className="text-sm text-[#e5e7eb]">Email</label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-300" size={18} />
                 <input
@@ -106,7 +108,7 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              abel className="text-sm text-[#e5e7eb]">Password</label>
+              <label className="text-sm text-[#e5e7eb]">Password</label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-violet-300" size={18} />
                 <input
@@ -121,6 +123,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => setShowPassword((p) => !p)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-[#e5e7eb] hover:text-white"
+                  aria-label="Toggle password visibility"
                 >
                   <motion.div animate={{ scale: showPassword ? 1.08 : 1 }} transition={{ duration: 0.2 }}>
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
