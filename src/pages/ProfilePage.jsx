@@ -3,14 +3,15 @@ import { useAuth } from "../contexts/AuthContext";
 import BottomNav from "../components/BottomNav";
 import { useNavigate } from "react-router-dom";
 import { User, Crown, DollarSign, Star, UserPlus, LogOut } from "lucide-react";
-import { Auth } from "firebase/auth";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 
 export default function ProfilePage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
   const logout = async () => {
-    await Auth.signOut();
+    await signOut(auth);
     navigate("/login", { replace: true });
   };
 
@@ -34,9 +35,9 @@ export default function ProfilePage() {
             <div className="w-20 h-20 rounded-[24px] overflow-hidden border-2 border-[rgba(255,255,255,0.15)]">
               <img
                 src={
-                  user.photoURL ||
+                  user?.photoURL ||
                   "https://ui-avatars.com/api/?name=" +
-                    (user.displayName || "U") +
+                    (user?.displayName || "U") +
                     "&background=06b6d4&color=fff"
                 }
                 alt="Profile"
@@ -45,20 +46,17 @@ export default function ProfilePage() {
             </div>
             <div className="text-center">
               <h1 className="text-lg font-semibold">
-                {user.displayName || "User"}
+                {user?.displayName || "User"}
               </h1>
               <p className="text-sm text-[#9ca3af]">
-                {user.email || "Unknown email"}
+                {user?.email || "Unknown email"}
               </p>
             </div>
           </div>
 
           <div className="mt-6 space-y-4">
             <div className="flex flex-col gap-1">
-              <div
-                className="flex items-center gap-2 text-sm"
-                style={{ opacity: 0.5 }}
-              >
+              <div className="flex items-center gap-2 text-sm" style={{ opacity: 0.5 }}>
                 <User size={16} strokeWidth={2} />
                 <span className="text-[#9ca3af]">Profile</span>
               </div>
@@ -67,10 +65,7 @@ export default function ProfilePage() {
               </div>
             </div>
             <div className="flex flex-col gap-1">
-              <div
-                className="flex items-center gap-2 text-sm"
-                style={{ opacity: 0.5 }}
-              >
+              <div className="flex items-center gap-2 text-sm" style={{ opacity: 0.5 }}>
                 <UserPlus size={16} strokeWidth={2} />
                 <span className="text-[#9ca3af]">Invite</span>
               </div>
@@ -79,10 +74,7 @@ export default function ProfilePage() {
               </div>
             </div>
             <div className="flex flex-col gap-1">
-              <div
-                className="flex items-center gap-2 text-sm"
-                style={{ opacity: 0.5 }}
-              >
+              <div className="flex items-center gap-2 text-sm" style={{ opacity: 0.5 }}>
                 <Star size={16} strokeWidth={2} />
                 <span className="text-[#9ca3af]">Leaderboard Rank</span>
               </div>
@@ -91,20 +83,14 @@ export default function ProfilePage() {
               </div>
             </div>
             <div className="flex flex-col gap-1">
-              <div
-                className="flex items-center gap-2 text-sm"
-                style={{ opacity: 0.5 }}
-              >
+              <div className="flex items-center gap-2 text-sm" style={{ opacity: 0.5 }}>
                 <DollarSign size={16} strokeWidth={2} />
                 <span className="text-[#9ca3af]">Total Earned</span>
               </div>
               <div className="text-xs text-[#9ca3af]">78.20 AED</div>
             </div>
             <div className="flex flex-col gap-1">
-              <div
-                className="flex items-center gap-2 text-sm"
-                style={{ opacity: 0.5 }}
-              >
+              <div className="flex items-center gap-2 text-sm" style={{ opacity: 0.5 }}>
                 <Crown size={16} strokeWidth={2} />
                 <span className="text-[#9ca3af]">Level</span>
               </div>
@@ -116,8 +102,7 @@ export default function ProfilePage() {
         <motion.button
           onClick={logout}
           whileHover={{ scale: 1.02 }}
-          className="w-full btn mt-6 border border-[rgba(255,255,255,0.15)]
-            bg-transparent text-white"
+          className="w-full btn mt-6 border border-[rgba(255,255,255,0.15)] bg-transparent text-white"
         >
           <LogOut size={16} strokeWidth={2} />
           <span>Log Out</span>
