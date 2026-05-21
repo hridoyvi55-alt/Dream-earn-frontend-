@@ -19,6 +19,7 @@ function scorePassword(pw) {
 export default function SignupPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -99,6 +100,7 @@ export default function SignupPage() {
                 Dream Earn
               </span>
             </h1>
+
             <p className="mt-3 text-sm text-[#e5e7eb]">
               Create your account and get started.
             </p>
@@ -112,13 +114,13 @@ export default function SignupPage() {
 
           <form onSubmit={onSubmit} className="mt-6 space-y-4">
             <div className="space-y-2">
-              abel className="text-sm text-[#e5e7eb]">Full Name</label>
+              <label className="text-sm text-[#e5e7eb]">Full Name</label>
               <div className="relative">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-300" size={18} />
                 <input
+                  type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  type="text"
                   placeholder="Your full name"
                   className="w-full pl-11 pr-4 py-4 rounded-3xl bg-black/18 border border-white/10 outline-none focus:border-cyan-400/70 focus:bg-black/24 transition-all"
                   required
@@ -127,13 +129,13 @@ export default function SignupPage() {
             </div>
 
             <div className="space-y-2">
-              abel className="text-sm text-[#e5e7eb]">Email</label>
+              <label className="text-sm text-[#e5e7eb]">Email</label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-violet-300" size={18} />
                 <input
+                  type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  type="email"
                   placeholder="you@example.com"
                   className="w-full pl-11 pr-4 py-4 rounded-3xl bg-black/18 border border-white/10 outline-none focus:border-cyan-400/70 focus:bg-black/24 transition-all"
                   required
@@ -142,7 +144,7 @@ export default function SignupPage() {
             </div>
 
             <div className="space-y-2">
-              abel className="text-sm text-[#e5e7eb]">Password</label>
+              <label className="text-sm text-[#e5e7eb]">Password</label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-300" size={18} />
                 <input
@@ -157,6 +159,7 @@ export default function SignupPage() {
                   type="button"
                   onClick={() => setShowPassword((p) => !p)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-[#e5e7eb] hover:text-white"
+                  aria-label="Toggle password visibility"
                 >
                   <motion.div animate={{ scale: showPassword ? 1.08 : 1 }} transition={{ duration: 0.2 }}>
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
