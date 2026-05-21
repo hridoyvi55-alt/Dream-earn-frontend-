@@ -1,5 +1,4 @@
-import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -7,43 +6,53 @@ import { auth, googleProvider } from "../firebase/firebase";
 import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
-  const { user, loading: authLoading } = useAuth();
+  const [loadingAction, setLoadingAction] = useState(false);
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authLoading && user) navigate("/", { replace: true });
-  }, [user, authLoading, navigate]);
+    if (!loading && user) navigate("/", { replace: true });
+  }, [user, loading, navigate]);
 
-  const onSubmit = async ({ email, password }) => {
-    setLoading(true);
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setLoadingAction(true);
     setError("");
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/", { replace: true });
     } catch (err) {
-      if (err.code === "auth/user-not-found" || err.code === "auth/invalid-email")
+      if (err?.code === "auth/user-not-found" || err?.code === "auth/invalid-email") {
         setError("No account with this email");
-      else if (err.code === "auth/wrong-password") setError("Wrong password");
-      else setError("Sign in failed. Try again.");
+      } else if (err?.code === "auth/wrong-password") {
+        setError("Wrong password");
+      } else {
+        setError("Sign in failed. Try again.");
+      }
     } finally {
-      setLoading(false);
+      setLoadingAction(false);
     }
   };
 
   const signInWithGoogle = async () => {
-    setLoading(true);
+    setLoadingAction(true);
     setError("");
+
     try {
       await signInWithPopup(auth, googleProvider);
       navigate("/", { replace: true });
     } catch (err) {
-      if (err.code === "auth/popup-blocked") setError("Please allow popups.");
-      else setError("Google sign in failed. Try again.");
+      if (err?.code === "auth/popup-blocked") {
+        setError("Please allow popups.");
+      } else {
+        setError("Google sign in failed. Try again.");
+      }
     } finally {
-      setLoading(false);
+      setLoadingAction(false);
     }
   };
 
@@ -78,33 +87,39 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={onSubmit} className="space-y-4">
             <div className="space-y-2">
               <label className="text-xs text-[#9ca3af]">Email</label>
               <input
-                {...register("email", { required: true, minLength: 5 })}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="you@example.com"
                 className="w-full p-3 rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/4"
-                disabled={loading}
+                disabled={loadingAction}
+                required
               />
             </div>
+
             <div className="space-y-2">
               <label className="text-xs text-[#9ca3af]">Password</label>
               <input
-                {...register("password", { required: true, minLength: 6 })}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 placeholder="********"
                 className="w-full p-3 rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/4"
-                disabled={loading}
+                disabled={loadingAction}
+                required
               />
             </div>
+
             <button
               type="submit"
-              disabled={loading}
+              disabled={loadingAction}
               className="w-full btn btn-primary font-semibold"
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loadingAction ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
@@ -116,9 +131,8 @@ export default function LoginPage() {
 
           <button
             onClick={signInWithGoogle}
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border border-[rgba(255,255,255,0.1)]
-              bg-white/4 hover:bg-white/6 transition-all"
+            disabled={loadingAction}
+            className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/4 hover:bg-white/6 transition-all"
           >
             <img
               src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
@@ -130,7 +144,7 @@ export default function LoginPage() {
           </button>
 
           <div className="text-center text-xs text-[#9ca3af] mt-4">
-            By signing in, you agree to the Terms &amp; Conditions
+            By signing in, you agree to the Terms & Conditions
           </div>
         </div>
       </motion.div>
